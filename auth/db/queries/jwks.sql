@@ -62,7 +62,7 @@ SELECT
 FROM
   jwk_keys
 WHERE
-  status IN ('ACTIVE', 'RETIRED')
+  status IN ('ACTIVE', 'RETIRING')
 ORDER BY
   created_at DESC;
 

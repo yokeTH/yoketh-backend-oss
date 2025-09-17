@@ -153,8 +153,8 @@ func (m *Manager) Rotate(ctx context.Context) (string, error) {
 	defer func() { _ = tx.Rollback() }()
 
 	qtx := m.queries.WithTx(tx)
-	err = qtx.UpdateJWKToRetiring(ctx)
 	err = qtx.UpdateJWKToRetired(ctx)
+	err = qtx.UpdateJWKToRetiring(ctx)
 
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
