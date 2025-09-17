@@ -42,6 +42,9 @@ func main() {
 		panic(err)
 	}
 	keyManager := keys.NewManager(sqlDB, queries, keyWrapper, "auth-service")
+	if err := keyManager.Init(ctx); err != nil {
+		panic(err)
+	}	
 
 	httpHandler := http.NewHandler(keyManager)
 

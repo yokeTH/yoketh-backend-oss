@@ -65,3 +65,11 @@ WHERE
   status IN ('ACTIVE', 'RETIRED')
 ORDER BY
   created_at DESC;
+
+-- name: CountJWK :one
+SELECT
+  COUNT(*)
+FROM
+  jwk_keys
+WHERE
+  status IN ('ACTIVE', 'RETIRING');

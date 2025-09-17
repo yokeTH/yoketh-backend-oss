@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CountJWK(ctx context.Context) (int64, error)
 	CreateJWK(ctx context.Context, arg CreateJWKParams) error
 	GetJWK(ctx context.Context) (GetJWKRow, error)
 	GetPubJWK(ctx context.Context) ([]GetPubJWKRow, error)

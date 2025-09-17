@@ -12,6 +12,22 @@ import (
 	"time"
 )
 
+const countJWK = `-- name: CountJWK :one
+SELECT
+  COUNT(*)
+FROM
+  jwk_keys
+WHERE
+  status IN ('ACTIVE', 'RETIRING')
+`
+
+func (q *Queries) CountJWK(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countJWK)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createJWK = `-- name: CreateJWK :exec
 INSERT INTO
   jwk_keys (

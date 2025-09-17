@@ -50,6 +50,22 @@ func NewManager(db *sql.DB, q *db.Queries, wrapper KeyWrapper, iss string) *Mana
 	}
 }
 
+func (m *Manager) Init(ctx context.Context) error {
+	n, err := m.queries.CountJWK(ctx)
+	if err != nil {
+		return err
+	}
+
+	if n == 0 {
+		_, err := m.GenerateAndStore(context.Background(), m.genKID())
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *Manager) GenerateAndStore(ctx context.Context, kid string) (string, error) {
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
@@ -252,4 +268,10 @@ func aesGCMDecrypt(key, nonce, ct, aad []byte) ([]byte, error) {
 		return nil, err
 	}
 	return gcm.Open(nil, nonce, ct, aad)
+}
+
+func (m *Manager) genKID() string {
+	b := make([]byte, 32)
+	_, _ = rand.Read(b)
+	return base64.RawURLEncoding.EncodeToString(b)
 }
