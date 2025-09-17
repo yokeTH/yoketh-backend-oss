@@ -57,7 +57,7 @@ func (m *Manager) Init(ctx context.Context) error {
 	}
 
 	if n == 0 {
-		_, err := m.GenerateAndStore(context.Background(), m.genKID())
+		_, err := m.GenerateAndStore(context.Background())
 		if err != nil {
 			return err
 		}
@@ -66,7 +66,9 @@ func (m *Manager) Init(ctx context.Context) error {
 	return nil
 }
 
-func (m *Manager) GenerateAndStore(ctx context.Context, kid string) (string, error) {
+func (m *Manager) GenerateAndStore(ctx context.Context) (string, error) {
+	kid := genKID()
+
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return "", err
@@ -141,7 +143,9 @@ func (m *Manager) LoadActiveSigner(ctx context.Context) (kid string, priv *ecdsa
 	return r.KID, ecdsaKey, nil
 }
 
-func (m *Manager) Rotate(ctx context.Context, newKID string) (string, error) {
+func (m *Manager) Rotate(ctx context.Context) (string, error) {
+	newKID := genKID()
+
 	tx, err := m.DB.BeginTx(ctx, nil)
 	if err != nil {
 		return "", err
@@ -270,7 +274,7 @@ func aesGCMDecrypt(key, nonce, ct, aad []byte) ([]byte, error) {
 	return gcm.Open(nil, nonce, ct, aad)
 }
 
-func (m *Manager) genKID() string {
+func genKID() string {
 	b := make([]byte, 32)
 	_, _ = rand.Read(b)
 	return base64.RawURLEncoding.EncodeToString(b)
