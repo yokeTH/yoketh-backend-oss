@@ -1,0 +1,16 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "auth/db/queries"
+    schema: "auth/db/migrations"
+    gen:
+      go:
+        package: "db"
+        out: "auth/internal/db"
+        emit_interface: true
+        rename:
+          kid: KID
+          alg: ALG
+          public_jwk: PublicJWK
+          wrapped_dek: WrappedDEK
+          kek_ref: KEKRef
