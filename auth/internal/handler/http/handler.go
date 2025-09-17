@@ -2,15 +2,15 @@ package http
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/yokeTH/yoketh-backend-oss/auth/internal/keys"
+	"github.com/yokeTH/yoketh-backend-oss/auth/internal/key"
 	"github.com/yokeTH/yoketh-backend-oss/pkg/apperror"
 )
 
 type Handler struct {
-	Mgr *keys.Manager
+	Mgr *key.Manager
 }
 
-func NewHandler(mgr *keys.Manager) *Handler {
+func NewHandler(mgr *key.Manager) *Handler {
 	return &Handler{
 		Mgr: mgr,
 	}

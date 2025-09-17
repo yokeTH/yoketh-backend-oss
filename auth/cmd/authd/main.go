@@ -14,7 +14,7 @@ import (
 	"github.com/yokeTH/yoketh-backend-oss/auth/internal/config"
 	"github.com/yokeTH/yoketh-backend-oss/auth/internal/db"
 	"github.com/yokeTH/yoketh-backend-oss/auth/internal/handler/http"
-	"github.com/yokeTH/yoketh-backend-oss/auth/internal/keys"
+	"github.com/yokeTH/yoketh-backend-oss/auth/internal/key"
 	"github.com/yokeTH/yoketh-backend-oss/pkg/httpserver"
 )
 
@@ -37,14 +37,14 @@ func main() {
 
 	queries := db.New(sqlDB)
 
-	keyWrapper, err := keys.NewLocalWrapperFromEnv()
+	keyWrapper, err := key.NewLocalWrapperFromEnv()
 	if err != nil {
 		panic(err)
 	}
-	keyManager := keys.NewManager(sqlDB, queries, keyWrapper, "auth-service")
+	keyManager := key.NewManager(sqlDB, queries, keyWrapper, "auth-service")
 	if err := keyManager.Init(ctx); err != nil {
 		panic(err)
-	}	
+	}
 
 	httpHandler := http.NewHandler(keyManager)
 

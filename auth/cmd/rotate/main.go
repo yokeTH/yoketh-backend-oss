@@ -13,7 +13,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/yokeTH/yoketh-backend-oss/auth/internal/config"
 	"github.com/yokeTH/yoketh-backend-oss/auth/internal/db"
-	"github.com/yokeTH/yoketh-backend-oss/auth/internal/keys"
+	"github.com/yokeTH/yoketh-backend-oss/auth/internal/key"
 )
 
 func main() {
@@ -35,11 +35,11 @@ func main() {
 
 	queries := db.New(sqlDB)
 
-	keyWrapper, err := keys.NewLocalWrapperFromEnv()
+	keyWrapper, err := key.NewLocalWrapperFromEnv()
 	if err != nil {
 		panic(err)
 	}
-	keyManager := keys.NewManager(sqlDB, queries, keyWrapper, "auth-service")
+	keyManager := key.NewManager(sqlDB, queries, keyWrapper, "auth-service")
 	if err := keyManager.Init(ctx); err != nil {
 		panic(err)
 	}
