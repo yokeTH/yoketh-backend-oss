@@ -198,20 +198,20 @@ func (m *Manager) Rotate(ctx context.Context, newKID string) (string, error) {
 	return newKID, nil
 }
 
-func (m *Manager) JWKS(ctx context.Context) ([]byte, error) {
+func (m *Manager) JWKS(ctx context.Context) (jwks, error) {
 	rawPub, err := m.queries.GetPubJWK(ctx)
 	if err != nil {
-		return nil, err
+		return jwks{}, err
 	}
 
 	keys := make([]ecPublicJWK, len(rawPub))
 	for i, p := range rawPub {
 		if err := json.Unmarshal(p.PublicJWK, &keys[i]); err != nil {
-			return nil, err
+			return jwks{}, err
 		}
 	}
 
-	return json.Marshal(jwks{Keys: keys})
+	return jwks{Keys: keys}, nil
 }
 
 func buildECPublicJWK(kid string, pub *ecdsa.PublicKey) (ecPublicJWK, error) {
