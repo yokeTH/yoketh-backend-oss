@@ -26,7 +26,19 @@ go.work.sum
 
 # env file
 .env
+!.env.example
 
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Nix
+.direnv
+
+# Mac
+.DS_Store
+
+tmp/
+temp/
+bin/
+*.log
